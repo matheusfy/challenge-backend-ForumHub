@@ -1,0 +1,21 @@
+services:
+  db:
+    container_name: mysql_forumhub
+    image: mysql:${DB_VERSION}
+    restart: always
+    command:
+      -  --mysql-native-password=ON
+    env_file:
+      - .vscode/.env
+    environment:
+     MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+     MYSQL_DATABASE: ${DB_NAME}
+     MYSQL_USER: ${DB_USER}
+     MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - ${DB_PORT}:3306  
+
+volumes:
+  mysql_data:
