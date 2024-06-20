@@ -12,17 +12,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class UsuarioService {
 
+	@Autowired
 	List<ValidacaoUsuario> validacoes;
 
 	@Autowired
 	UsuarioRepository usuarioRepository;
 
 	@Transactional
-	public void cadastrarUsuario(CadastraUsuarioDTO usuarioDTO) {
+	public UserBasicInfoDTO cadastrarUsuario(CadastraUsuarioDTO usuarioDTO) {
 
 		validacoes.forEach(validacao -> validacao.validar(usuarioDTO));
 		Usuario usuario = new Usuario(usuarioDTO);
-		// usuarioRepository.save(usuario);
+
+		return new UserBasicInfoDTO(usuarioRepository.save(usuario));
 	}
 
 }

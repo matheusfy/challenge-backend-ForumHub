@@ -1,5 +1,6 @@
 package io.github.matheusfy.ForumHub.models.Usuario.validation;
 
+import io.github.matheusfy.ForumHub.models.Usuario.exceptions.DuplicatedEmailException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,11 +15,8 @@ public class ValidaUsuarioEmail implements ValidacaoUsuario {
 
 	@Override
 	public void validar(CadastraUsuarioDTO usuario) {
-
-		// TODO: Retornar uma exception personalizada
-
 		if (usuarioRepository.findByEmail(usuario.email()).isPresent()) {
-			throw new RuntimeException("Email já cadastrado");
+			throw new DuplicatedEmailException("Email já cadastrado");
 		}
 	}
 }
