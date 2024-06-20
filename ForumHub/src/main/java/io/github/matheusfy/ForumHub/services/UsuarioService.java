@@ -1,5 +1,8 @@
-package io.github.matheusfy.ForumHub.models.Usuario;
+package io.github.matheusfy.ForumHub.services;
 
+import io.github.matheusfy.ForumHub.models.Usuario.CadastraUsuarioDTO;
+import io.github.matheusfy.ForumHub.models.Usuario.UserBasicInfoDTO;
+import io.github.matheusfy.ForumHub.models.Usuario.Usuario;
 import io.github.matheusfy.ForumHub.models.Usuario.validation.ValidacaoUsuario;
 import io.github.matheusfy.ForumHub.repositories.UsuarioRepository;
 import jakarta.transaction.Transactional;

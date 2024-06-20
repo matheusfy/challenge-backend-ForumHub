@@ -4,7 +4,8 @@ import io.github.matheusfy.ForumHub.infra.exceptions.GlobalExceptionHandler;
 import io.github.matheusfy.ForumHub.models.Usuario.CadastraUsuarioDTO;
 import io.github.matheusfy.ForumHub.models.Usuario.UserBasicInfoDTO;
 import io.github.matheusfy.ForumHub.models.Usuario.Usuario;
-import io.github.matheusfy.ForumHub.models.Usuario.UsuarioService;
+import io.github.matheusfy.ForumHub.services.UsuarioService;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,7 @@ public class UsuarioControllerTests {
 	void cadastrarUsuarioValidoTest() throws Exception {
 
 		UserBasicInfoDTO usuarioDTOEsperado = new UserBasicInfoDTO(
-				new Usuario(1L, "John Doe", "johndoe@example.com", "pass"));
+				new Usuario(1L, "John Doe", "johndoe@example.com", "pass", null, null));
 		when(usuarioService.cadastrarUsuario(any())).thenReturn(usuarioDTOEsperado);
 
 		MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/usuarios")
