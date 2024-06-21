@@ -5,6 +5,8 @@ import io.github.matheusfy.ForumHub.models.Usuario.UserBasicInfoDTO;
 import io.github.matheusfy.ForumHub.services.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -20,6 +23,13 @@ public class UsuarioController {
 
 	@Autowired
 	UsuarioService usuarioService;
+
+	@GetMapping
+	public ResponseEntity<Page<UserBasicInfoDTO>> getMethodName(Pageable Pageable) {
+
+		Page<UserBasicInfoDTO> users = usuarioService.getAllUsers(Pageable);
+		return ResponseEntity.ok().body(users);
+	}
 
 	@PostMapping
 	public ResponseEntity<UserBasicInfoDTO> cadastrarUsuario(@RequestBody @Valid CadastraUsuarioDTO usuario,

@@ -35,7 +35,7 @@ public class TopicoService {
 
 		Optional<Usuario> usuario = usuarioRepository.findById(topicoDTO.idAutor());
 		if (usuario.isEmpty()) {
-			throw new IllegalArgumentException("Usuário não encontrado");
+			throw new InvalidUserException("Usuário não encontrado");
 		}
 
 		// TODO: Implementar validação de curso

@@ -37,6 +37,9 @@ public class Usuario implements UserDetails {
 	private String email;
 	private String senha;
 
+	// TODO: Inserir coluna no Banco antes de descomentar
+	// private Boolean ativo = true;
+
 	@OneToMany(mappedBy = "usuario")
 	private List<Resposta> respostas;
 
@@ -50,6 +53,7 @@ public class Usuario implements UserDetails {
 		this.nome = usuario.nome();
 		this.email = usuario.email();
 		this.senha = new BCryptPasswordEncoder().encode(usuario.senha());
+		// this.ative = true
 	}
 
 	@Override

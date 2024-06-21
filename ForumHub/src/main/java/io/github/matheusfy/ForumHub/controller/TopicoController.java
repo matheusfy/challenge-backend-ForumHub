@@ -23,14 +23,14 @@ public class TopicoController {
 	private TopicoService topicoService;
 
 	@GetMapping
-	public String getMethodName(@RequestBody String param) {
+	public ResponseEntity buscarTodosTopicos() {
 
-		return "mensagem recebida";
+		return ResponseEntity.ok().build();
 	}
 
 	@PostMapping
 	public ResponseEntity<String> cadastrarTopico(@RequestBody @Valid CadastroTopicoDTO topico) {
-		// TODO: process POST request
+
 		topicoService.cadastrarTopico(topico);
 		return ResponseEntity.ok().build();
 	}
