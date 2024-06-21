@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import io.github.matheusfy.ForumHub.models.Resposta.Resposta;
 import io.github.matheusfy.ForumHub.models.Topico.Topico;
+import io.github.matheusfy.ForumHub.models.Usuario.dto.CadastraUsuarioDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

@@ -1,13 +1,13 @@
 package io.github.matheusfy.ForumHub.infra.exceptions;
 
-import io.github.matheusfy.ForumHub.models.Usuario.exceptions.DuplicatedEmailException;
-import io.github.matheusfy.ForumHub.models.Usuario.exceptions.SenhaInvalidException;
-import io.github.matheusfy.ForumHub.services.InvalidUserException;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.DuplicateTituloAndMessagemException;
+import io.github.matheusfy.ForumHub.infra.exceptions.usuarioExceptions.DuplicatedEmailException;
+import io.github.matheusfy.ForumHub.infra.exceptions.usuarioExceptions.SenhaInvalidException;
 
 @Component
 public class GlobalExceptionHandler {
@@ -24,6 +24,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidUserException.class)
     public ResponseEntity<String> InvalidUserException(InvalidUserException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(DuplicateTituloAndMessagemException.class)
+    public ResponseEntity<String> DuplicateTituloAndMessagemException(DuplicateTituloAndMessagemException ex) {
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
 

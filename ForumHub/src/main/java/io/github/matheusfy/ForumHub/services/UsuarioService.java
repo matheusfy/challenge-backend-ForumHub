@@ -1,9 +1,9 @@
 package io.github.matheusfy.ForumHub.services;
 
-import io.github.matheusfy.ForumHub.models.Usuario.CadastraUsuarioDTO;
-import io.github.matheusfy.ForumHub.models.Usuario.UserBasicInfoDTO;
 import io.github.matheusfy.ForumHub.models.Usuario.Usuario;
-import io.github.matheusfy.ForumHub.models.Usuario.validation.ValidacaoUsuario;
+import io.github.matheusfy.ForumHub.models.Usuario.dto.CadastraUsuarioDTO;
+import io.github.matheusfy.ForumHub.models.Usuario.dto.UserBasicInfoDTO;
+import io.github.matheusfy.ForumHub.models.Usuario.validation.IValidacaoUsuario;
 import io.github.matheusfy.ForumHub.repositories.UsuarioRepository;
 import jakarta.transaction.Transactional;
 
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class UsuarioService {
 
 	@Autowired
-	List<ValidacaoUsuario> validacoes;
+	List<IValidacaoUsuario> validacoes;
 
 	@Autowired
 	UsuarioRepository usuarioRepository;

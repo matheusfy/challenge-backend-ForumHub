@@ -1,11 +1,15 @@
 package io.github.matheusfy.ForumHub.controller;
 
+import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.util.UriComponentsBuilder;
 import io.github.matheusfy.ForumHub.models.Topico.CadastroTopicoDTO;
+import io.github.matheusfy.ForumHub.models.Topico.dto.TopicoDetailsDTO;
 import io.github.matheusfy.ForumHub.services.TopicoService;
 import jakarta.validation.Valid;
 
@@ -23,16 +27,19 @@ public class TopicoController {
 	private TopicoService topicoService;
 
 	@GetMapping
-	public ResponseEntity buscarTodosTopicos() {
+	public ResponseEntity<Page<TopicoDetailsDTO>> buscarTodosTopicos(Pageable pageable) {
 
-		return ResponseEntity.ok().build();
+		Page<TopicoDetailsDTO> topicosEncontrados = topicoService.getAllTopicos(pageable);
+		return ResponseEntity.ok().body(topicosEncontrados);
 	}
 
 	@PostMapping
-	public ResponseEntity<String> cadastrarTopico(@RequestBody @Valid CadastroTopicoDTO topico) {
+	public ResponseEntity<TopicoDetailsDTO> cadastrarTopico(
+			@RequestBody @Valid CadastroTopicoDTO topico, UriComponentsBuilder uriBuilder) {
 
-		topicoService.cadastrarTopico(topico);
-		return ResponseEntity.ok().build();
+		TopicoDetailsDTO topicoCadastrado = topicoService.cadastrarTopico(topico);
+		URI uri = uriBuilder.path("/topicos/{id}").buildAndExpand(topicoCadastrado.id()).toUri();
+		return ResponseEntity.created(uri).body(topicoCadastrado);
 	}
 
 }

@@ -1,12 +1,12 @@
 package io.github.matheusfy.ForumHub.models.Usuario.validation;
 
-import io.github.matheusfy.ForumHub.models.Usuario.exceptions.SenhaInvalidException;
+import io.github.matheusfy.ForumHub.infra.exceptions.usuarioExceptions.SenhaInvalidException;
+import io.github.matheusfy.ForumHub.models.Usuario.dto.CadastraUsuarioDTO;
+
 import org.springframework.stereotype.Component;
 
-import io.github.matheusfy.ForumHub.models.Usuario.CadastraUsuarioDTO;
-
 @Component
-public class ValidaUsuarioSenha implements ValidacaoUsuario {
+public class ValidaUsuarioSenha implements IValidacaoUsuario {
 
 	@Override
 	public void validar(CadastraUsuarioDTO usuarioDTO) {

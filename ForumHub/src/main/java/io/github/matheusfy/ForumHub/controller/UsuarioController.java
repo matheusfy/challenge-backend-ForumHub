@@ -1,7 +1,7 @@
 package io.github.matheusfy.ForumHub.controller;
 
-import io.github.matheusfy.ForumHub.models.Usuario.CadastraUsuarioDTO;
-import io.github.matheusfy.ForumHub.models.Usuario.UserBasicInfoDTO;
+import io.github.matheusfy.ForumHub.models.Usuario.dto.CadastraUsuarioDTO;
+import io.github.matheusfy.ForumHub.models.Usuario.dto.UserBasicInfoDTO;
 import io.github.matheusfy.ForumHub.services.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,9 @@
 package io.github.matheusfy.ForumHub.controllerTest;
 
 import io.github.matheusfy.ForumHub.infra.exceptions.GlobalExceptionHandler;
-import io.github.matheusfy.ForumHub.models.Usuario.CadastraUsuarioDTO;
-import io.github.matheusfy.ForumHub.models.Usuario.UserBasicInfoDTO;
 import io.github.matheusfy.ForumHub.models.Usuario.Usuario;
+import io.github.matheusfy.ForumHub.models.Usuario.dto.CadastraUsuarioDTO;
+import io.github.matheusfy.ForumHub.models.Usuario.dto.UserBasicInfoDTO;
 import io.github.matheusfy.ForumHub.services.UsuarioService;
 
 import org.junit.jupiter.api.DisplayName;
