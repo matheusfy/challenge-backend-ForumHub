@@ -41,7 +41,8 @@ public class Topico {
 
 	private LocalDateTime dataCriacao;
 	private LocalDateTime dataAtualizacao;
-	private Long idCurso;
+
+	// private Long cursoId;
 
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
@@ -57,7 +58,7 @@ public class Topico {
 		this.status = StatusTopico.ABERTO;
 		this.dataCriacao = LocalDateTime.now();
 		this.dataAtualizacao = LocalDateTime.now();
-		this.idCurso = topicoDTO.idCurso();
+		// this.cursoId = topicoDTO.cursoId();
 		this.respostas = List.of();
 	}
 }
