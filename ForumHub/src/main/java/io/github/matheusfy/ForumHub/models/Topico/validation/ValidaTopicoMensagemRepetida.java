@@ -19,8 +19,8 @@ public class ValidaTopicoMensagemRepetida implements IValidacaoTopico {
 	@Override
 	public void valida(CadastroTopicoDTO topicoDTO) {
 
-		Optional<Topico> topicoBuscado =
-				topicoRepository.findByTituloAndMensagem(topicoDTO.titulo(), topicoDTO.mensagem());
+		Optional<Topico> topicoBuscado = topicoRepository
+				.findByTituloAndMensagemAndDeletedIsFalse(topicoDTO.titulo(), topicoDTO.mensagem());
 
 		if (topicoBuscado.isPresent()) {
 			throw new DuplicateTituloAndMessagemException(
