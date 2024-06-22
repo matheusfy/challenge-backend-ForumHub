@@ -3,7 +3,8 @@ package io.github.matheusfy.ForumHub.models.Topico;
 import java.time.LocalDateTime;
 
 import java.util.List;
-
+import io.github.matheusfy.ForumHub.controller.AtualizacaoTopicoDTO;
+import io.github.matheusfy.ForumHub.models.Curso.Curso;
 import io.github.matheusfy.ForumHub.models.Resposta.Resposta;
 import io.github.matheusfy.ForumHub.models.Usuario.Usuario;
 import jakarta.persistence.Entity;
@@ -42,7 +43,9 @@ public class Topico {
 	private LocalDateTime dataCriacao;
 	private LocalDateTime dataAtualizacao;
 
-	// private Long cursoId;
+	@ManyToOne
+	@JoinColumn(name = "curso_id")
+	private Curso curso;
 
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
@@ -51,14 +54,46 @@ public class Topico {
 	@OneToMany(mappedBy = "topico")
 	private List<Resposta> respostas;
 
-	public Topico(CadastroTopicoDTO topicoDTO, Usuario usuario) {
+	public Topico(CadastroTopicoDTO topicoDTO, Curso curso, Usuario usuario) {
 		this.titulo = topicoDTO.titulo();
 		this.mensagem = topicoDTO.mensagem();
 		this.usuario = usuario;
 		this.status = StatusTopico.ABERTO;
 		this.dataCriacao = LocalDateTime.now();
 		this.dataAtualizacao = LocalDateTime.now();
-		// this.cursoId = topicoDTO.cursoId();
+		this.curso = curso;
 		this.respostas = List.of();
+	}
+
+	public void updateDataAtualizacao() {
+		this.dataAtualizacao = LocalDateTime.now();
+	}
+
+	private boolean validString(String str) {
+		return str != null && !str.isEmpty();
+	}
+
+	public boolean updated(AtualizacaoTopicoDTO topico, Curso curso) {
+		boolean updated = false;
+		if (validString(topico.titulo()) && !topico.titulo().equals(this.titulo)) {
+			this.titulo = topico.titulo();
+			updated = true;
+		}
+		if (validString(topico.mensagem()) && !topico.mensagem().equals(this.mensagem)) {
+			this.mensagem = topico.mensagem();
+			updated = true;
+		}
+		if ((topico.status() != null) && !topico.status().equals(this.status)) {
+			this.status = topico.status();
+			updated = true;
+		}
+		if (this.curso == null || !curso.equals(this.curso)) {
+			this.curso = curso;
+			updated = true;
+		}
+		if (updated) {
+			updateDataAtualizacao();
+		}
+		return updated;
 	}
 }

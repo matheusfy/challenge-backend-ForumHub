@@ -1,6 +1,8 @@
 package io.github.matheusfy.ForumHub.models.Curso;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,5 +25,13 @@ public class Curso {
 	Long id;
 
 	String nome;
+
+	@Enumerated(EnumType.STRING)
 	CursoCategorias categoria;
+
+	public Curso(String nome, CursoCategorias categoria) {
+		this.id = null;
+		this.nome = nome;
+		this.categoria = categoria;
+	}
 }
