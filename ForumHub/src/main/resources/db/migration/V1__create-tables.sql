@@ -28,11 +28,9 @@ create table topicos (
   data_criacao timestamp not null,
   status varchar(255) not null,
   curso_id bigint,
-  resposta_id bigint,
   usuario_id bigint not null,
 
   FOREIGN KEY (curso_id) REFERENCES cursos(id),
-  FOREIGN KEY (resposta_id) REFERENCES respostas(id),
   FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
 
