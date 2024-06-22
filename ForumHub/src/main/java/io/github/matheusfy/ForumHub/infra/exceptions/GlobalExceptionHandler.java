@@ -6,10 +6,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.DuplicateTituloAndMessagemException;
 import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.InvalidCursoException;
+import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.TopicoNotUpdatedException;
+import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.TopiconNotFoundException;
 import io.github.matheusfy.ForumHub.infra.exceptions.usuarioExceptions.DuplicatedEmailException;
 import io.github.matheusfy.ForumHub.infra.exceptions.usuarioExceptions.SenhaInvalidException;
-import io.github.matheusfy.ForumHub.services.TopicoNotUpdatedException;
-import io.github.matheusfy.ForumHub.services.TopiconNotFoundException;
+import io.github.matheusfy.ForumHub.services.TopicoDeletedException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -48,6 +49,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(TopicoNotUpdatedException.class)
     public ResponseEntity<String> TopicoNotUpdatedException(TopicoNotUpdatedException ex) {
         return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(TopicoDeletedException.class)
+    public ResponseEntity<String> TopicoDeletedException(TopicoDeletedException ex) {
+        return ResponseEntity.status(HttpStatus.GONE).body(ex.getMessage());
     }
 
     public record ErrorMsg(String campo, String msg) {

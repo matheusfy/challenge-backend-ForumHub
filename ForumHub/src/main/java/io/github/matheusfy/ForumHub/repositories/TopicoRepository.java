@@ -11,10 +11,14 @@ import io.github.matheusfy.ForumHub.models.Topico.Topico;
 @Repository
 public interface TopicoRepository extends JpaRepository<Topico, Long> {
 
-	Optional<Topico> findByTituloAndMensagem(String titulo, String mensagem);
+	Optional<Topico> findByTituloAndMensagemAndDeletedIsFalse(String titulo, String mensagem);
 
-	Page<Topico> findTop10ByOrderByDataCriacaoDesc(Pageable pageable);
+	Page<Topico> findTop10ByDeletedIsFalseOrderByDataCriacaoDesc(Pageable pageable);
 
-	Page<Topico> findAllByOrderByDataCriacaoDesc(Pageable pageable);
+	Page<Topico> findAllByDeletedIsFalseOrderByDataCriacaoDesc(Pageable pageable);
+
+	Optional<Topico> findByIdAndDeletedIsFalse(Long id);
+
+	Page<Topico> findAllByDeletedIsFalse(Pageable pageable);
 
 }

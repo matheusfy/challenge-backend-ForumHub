@@ -43,6 +43,8 @@ public class Topico {
 	private LocalDateTime dataCriacao;
 	private LocalDateTime dataAtualizacao;
 
+	private boolean deleted;
+
 	@ManyToOne
 	@JoinColumn(name = "curso_id")
 	private Curso curso;
@@ -63,6 +65,7 @@ public class Topico {
 		this.dataAtualizacao = LocalDateTime.now();
 		this.curso = curso;
 		this.respostas = List.of();
+		this.deleted = false;
 	}
 
 	public void updateDataAtualizacao() {
@@ -71,6 +74,12 @@ public class Topico {
 
 	private boolean validString(String str) {
 		return str != null && !str.isEmpty();
+	}
+
+	public void delete() {
+		this.deleted = true;
+		this.updateDataAtualizacao();
+		this.status = StatusTopico.ENCERRADO;
 	}
 
 	public boolean updated(AtualizacaoTopicoDTO topico, Curso curso) {
