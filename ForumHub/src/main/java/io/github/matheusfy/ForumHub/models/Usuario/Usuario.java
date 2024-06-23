@@ -1,13 +1,11 @@
 package io.github.matheusfy.ForumHub.models.Usuario;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import io.github.matheusfy.ForumHub.models.Resposta.Resposta;
 import io.github.matheusfy.ForumHub.models.Topico.Topico;
 import io.github.matheusfy.ForumHub.models.Usuario.dto.CadastraUsuarioDTO;
@@ -18,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,6 +27,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode(of = "id")
 public class Usuario implements UserDetails {
 
 	@Id
@@ -49,10 +49,21 @@ public class Usuario implements UserDetails {
 	// TODO: Implemental perfil
 	// private Perfil perfil;
 
+	public Usuario(String nome, String email, String senha) {
+		this.id = null;
+		this.nome = nome;
+		this.email = email;
+		this.senha = senha;
+		this.ativo = true;
+		this.respostas = new ArrayList<Resposta>();
+		this.topicos = new ArrayList<Topico>();
+	}
+
+
 	public Usuario(CadastraUsuarioDTO usuario) {
 		this.nome = usuario.nome();
 		this.email = usuario.email();
-		this.senha = new BCryptPasswordEncoder().encode(usuario.senha());
+		this.senha = usuario.senha();
 		this.ativo = true;
 	}
 

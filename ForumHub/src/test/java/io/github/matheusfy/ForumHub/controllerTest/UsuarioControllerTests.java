@@ -58,19 +58,19 @@ public class UsuarioControllerTests {
 	void cadastrarUsuarioValidoTest() throws Exception {
 
 		UserBasicInfoDTO usuarioDTOEsperado = new UserBasicInfoDTO(
-				new Usuario(1L, "John Doe", "johndoe@example.com", "pass", null, null));
+				new Usuario(1L, "John Doe", "johndoe@example.com", "pass", true, null, null));
 		when(usuarioService.cadastrarUsuario(any())).thenReturn(usuarioDTOEsperado);
 
-		MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/usuarios")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(CadastroUsuarioDTOtest.write(
-						new CadastraUsuarioDTO("John Doe", "johndoe@example.com", "password")).getJson()))
+		MockHttpServletResponse response = mockMvc
+				.perform(MockMvcRequestBuilders.post("/usuarios").contentType(MediaType.APPLICATION_JSON)
+						.content(CadastroUsuarioDTOtest
+								.write(new CadastraUsuarioDTO("John Doe", "johndoe@example.com", "password"))
+								.getJson()))
 				.andReturn().getResponse();
 
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
 
-		String jsonUsuarioEsperado = UserBasicInfoDTOtest.write(
-				usuarioDTOEsperado).getJson();
+		String jsonUsuarioEsperado = UserBasicInfoDTOtest.write(usuarioDTOEsperado).getJson();
 
 		assertThat(response.getContentAsString()).isEqualTo(jsonUsuarioEsperado);
 	}
@@ -81,8 +81,8 @@ public class UsuarioControllerTests {
 
 		when(usuarioService.cadastrarUsuario(any())).thenReturn(null);
 
-		MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/usuarios")).andReturn()
-				.getResponse();
+		MockHttpServletResponse response =
+				mockMvc.perform(MockMvcRequestBuilders.post("/usuarios")).andReturn().getResponse();
 
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
 	}

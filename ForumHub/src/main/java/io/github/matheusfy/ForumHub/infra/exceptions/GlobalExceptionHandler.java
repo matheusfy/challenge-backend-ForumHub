@@ -6,11 +6,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.DuplicateTituloAndMessagemException;
 import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.InvalidCursoException;
+import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.TopicoDeletedException;
 import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.TopicoNotUpdatedException;
 import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.TopiconNotFoundException;
 import io.github.matheusfy.ForumHub.infra.exceptions.usuarioExceptions.DuplicatedEmailException;
+import io.github.matheusfy.ForumHub.infra.exceptions.usuarioExceptions.InvalidUserException;
 import io.github.matheusfy.ForumHub.infra.exceptions.usuarioExceptions.SenhaInvalidException;
-import io.github.matheusfy.ForumHub.services.TopicoDeletedException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

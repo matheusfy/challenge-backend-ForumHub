@@ -1,4 +1,4 @@
-package io.github.matheusfy.ForumHub.controller;
+package io.github.matheusfy.ForumHub.controller.User;
 
 import io.github.matheusfy.ForumHub.models.Usuario.dto.CadastraUsuarioDTO;
 import io.github.matheusfy.ForumHub.models.Usuario.dto.UserBasicInfoDTO;
@@ -25,15 +25,15 @@ public class UsuarioController {
 	UsuarioService usuarioService;
 
 	@GetMapping
-	public ResponseEntity<Page<UserBasicInfoDTO>> getMethodName(Pageable Pageable) {
+	public ResponseEntity<Page<UserBasicInfoDTO>> buscaTodosUsuarios(Pageable Pageable) {
 
 		Page<UserBasicInfoDTO> users = usuarioService.getAllUsers(Pageable);
 		return ResponseEntity.ok().body(users);
 	}
 
 	@PostMapping
-	public ResponseEntity<UserBasicInfoDTO> cadastrarUsuario(@RequestBody @Valid CadastraUsuarioDTO usuario,
-			UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<UserBasicInfoDTO> cadastrarUsuario(
+			@RequestBody @Valid CadastraUsuarioDTO usuario, UriComponentsBuilder uriBuilder) {
 
 		UserBasicInfoDTO userInfo = usuarioService.cadastrarUsuario(usuario);
 		URI uri = uriBuilder.path("/{id}").buildAndExpand(userInfo.id()).toUri();
