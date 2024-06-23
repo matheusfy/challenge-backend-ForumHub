@@ -31,7 +31,7 @@ public class SecurityConfiguration {
 					authorize.requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**")
 							.permitAll();
 					authorize.requestMatchers(HttpMethod.POST, "/auth/login").permitAll();
-					// authorize.anyRequest().authenticated(); //TODO: Implementar validação dos tokens
+					authorize.anyRequest().authenticated();
 				}).addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class).build();
 	}
 
