@@ -1,4 +1,4 @@
-package io.github.matheusfy.ForumHub.services;
+package io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions;
 
 public class TopicoDeletedException extends RuntimeException {
 

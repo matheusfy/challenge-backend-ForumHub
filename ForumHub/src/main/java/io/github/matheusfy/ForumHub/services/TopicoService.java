@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import io.github.matheusfy.ForumHub.controller.AtualizacaoTopicoDTO;
+import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.TopicoDeletedException;
 import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.TopicoNotUpdatedException;
 import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.TopiconNotFoundException;
 import io.github.matheusfy.ForumHub.models.Curso.Curso;
