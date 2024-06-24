@@ -2,7 +2,6 @@ package io.github.matheusfy.ForumHub.infra.filter;
 
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,27 +24,24 @@ public class SecurityFilter extends OncePerRequestFilter {
   @Autowired
   private UsuarioRepository userRepository;
 
-
   private final String AUTHORIZATION_HEADER = "Authorization";
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
       FilterChain filterChain) throws ServletException, IOException {
 
-
     String token = stripBearer(request);
-    // não podemos retornar uma exception pois temos requisições que passam sem token
 
     if (token != null) {
+
       DecodedJWT decodedJWT = tokenService.validateToken(token);
       String email = decodedJWT.getSubject();
       UserDetails usuario = userRepository.findByEmail(email).get();
 
-      UsernamePasswordAuthenticationToken userAuth =
-          new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
+      UsernamePasswordAuthenticationToken userAuth = new UsernamePasswordAuthenticationToken(usuario, null,
+          usuario.getAuthorities());
 
       SecurityContextHolder.getContext().setAuthentication(userAuth);
-
     }
 
     filterChain.doFilter(request, response);
@@ -58,7 +54,6 @@ public class SecurityFilter extends OncePerRequestFilter {
     if (bearerToken == null || !bearerToken.startsWith("Bearer ")) {
       return null;
     }
-
     return bearerToken.replace("Bearer ", "");
   }
 }

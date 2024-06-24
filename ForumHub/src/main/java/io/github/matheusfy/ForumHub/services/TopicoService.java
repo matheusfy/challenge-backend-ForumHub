@@ -6,13 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import io.github.matheusfy.ForumHub.controller.AtualizacaoTopicoDTO;
+
 import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.TopicoDeletedException;
 import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.TopicoNotUpdatedException;
 import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.TopiconNotFoundException;
 import io.github.matheusfy.ForumHub.models.Curso.Curso;
 import io.github.matheusfy.ForumHub.models.Topico.CadastroTopicoDTO;
 import io.github.matheusfy.ForumHub.models.Topico.Topico;
+import io.github.matheusfy.ForumHub.models.Topico.dto.AtualizacaoTopicoDTO;
 import io.github.matheusfy.ForumHub.models.Topico.dto.TopicoDetailsDTO;
 import io.github.matheusfy.ForumHub.models.Topico.validation.IValidacaoTopico;
 import io.github.matheusfy.ForumHub.models.Usuario.Usuario;
@@ -35,7 +36,6 @@ public class TopicoService {
 
 	@Autowired
 	List<IValidacaoTopico> validacoesTopico;
-
 
 	@Transactional
 	public TopicoDetailsDTO cadastrarTopico(CadastroTopicoDTO topicoDTO) {
@@ -78,7 +78,8 @@ public class TopicoService {
 	@Transactional
 	public TopicoDetailsDTO atualizarTopico(AtualizacaoTopicoDTO topico, Long id) {
 
-		// TODO: Deve ser validado se quem está alterando as informações do Topico é o próprio autor
+		// TODO: Deve ser validado se quem está alterando as informações do Topico é o
+		// próprio autor
 
 		Optional<Topico> topicoEntity = topicoRepository.findByIdAndDeletedIsFalse(id);
 		if (topicoEntity.isEmpty()) {
@@ -96,7 +97,6 @@ public class TopicoService {
 	@Transactional
 	public void deletarTopico(Long id) {
 
-
 		// TODO: Adicionar logica para verificar se usuario é o autor do topico
 
 		Optional<Topico> topico = topicoRepository.findByIdAndDeletedIsFalse(id);
@@ -107,7 +107,8 @@ public class TopicoService {
 		// adicionar um logger antes da deleção e outro depois para registro de exclusão
 		topico.get().delete();
 
-		// verificar se tem algumas respostas vinculado a este tópico. Pensar se deve deletar também ou
+		// verificar se tem algumas respostas vinculado a este tópico. Pensar se deve
+		// deletar também ou
 		// não as respostas
 	}
 }

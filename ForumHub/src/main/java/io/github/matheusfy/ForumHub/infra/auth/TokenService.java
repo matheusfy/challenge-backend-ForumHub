@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import io.github.matheusfy.ForumHub.models.Usuario.Usuario;
 
@@ -22,7 +23,6 @@ public class TokenService {
   public TokenService(@Value("${jwt.secret}") String secret) {
     this.secret = secret;
   }
-
 
   public String generateToken(Authentication authentication) {
 
@@ -42,14 +42,15 @@ public class TokenService {
     return Date.from(Instant.now().plus(1, ChronoUnit.DAYS));
   }
 
-
   public DecodedJWT validateToken(String token) {
 
     Algorithm algorithm = Algorithm.HMAC256(secret);
     try {
       return JWT.require(algorithm).withIssuer(ISSUER).build().verify(token);
-    } catch (IllegalArgumentException e) {
-      throw new IllegalArgumentException("Token inválido");
+    } catch (TokenExpiradoException ex) {
+      throw new TokenExpiradoException("Token expirado", ex.getExpiredOn());
+    } catch (JWTVerificationException e) {
+      throw new JWTVerificationException("Falha no processamento do token", e.getCause());
     }
   }
 }

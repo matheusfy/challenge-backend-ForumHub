@@ -3,9 +3,10 @@ package io.github.matheusfy.ForumHub.models.Topico;
 import java.time.LocalDateTime;
 
 import java.util.List;
-import io.github.matheusfy.ForumHub.controller.AtualizacaoTopicoDTO;
+
 import io.github.matheusfy.ForumHub.models.Curso.Curso;
 import io.github.matheusfy.ForumHub.models.Resposta.Resposta;
+import io.github.matheusfy.ForumHub.models.Topico.dto.AtualizacaoTopicoDTO;
 import io.github.matheusfy.ForumHub.models.Usuario.Usuario;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
