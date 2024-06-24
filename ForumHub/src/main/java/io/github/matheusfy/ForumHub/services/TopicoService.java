@@ -8,14 +8,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.TopicoDeletedException;
-import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.TopicoNotUpdatedException;
 import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.TopiconNotFoundException;
 import io.github.matheusfy.ForumHub.models.Curso.Curso;
 import io.github.matheusfy.ForumHub.models.Topico.CadastroTopicoDTO;
 import io.github.matheusfy.ForumHub.models.Topico.Topico;
 import io.github.matheusfy.ForumHub.models.Topico.dto.AtualizacaoTopicoDTO;
 import io.github.matheusfy.ForumHub.models.Topico.dto.TopicoDetailsDTO;
-import io.github.matheusfy.ForumHub.models.Topico.validation.IValidacaoTopico;
+import io.github.matheusfy.ForumHub.models.Topico.validation.atualizacao.IValidacaoUpdateTopico;
+import io.github.matheusfy.ForumHub.models.Topico.validation.cadastro.IValidacaoTopico;
+import io.github.matheusfy.ForumHub.models.Topico.validation.cadastro.ValidaTopicoMensagemRepetida;
 import io.github.matheusfy.ForumHub.models.Usuario.Usuario;
 import io.github.matheusfy.ForumHub.repositories.CursoRepository;
 import io.github.matheusfy.ForumHub.repositories.TopicoRepository;
@@ -25,90 +26,82 @@ import jakarta.transaction.Transactional;
 @Service
 public class TopicoService {
 
-	@Autowired
-	UsuarioRepository usuarioRepository;
+  @Autowired
+  UsuarioRepository usuarioRepository;
 
-	@Autowired
-	TopicoRepository topicoRepository;
+  @Autowired
+  TopicoRepository topicoRepository;
 
-	@Autowired
-	CursoRepository cursoRepository;
+  @Autowired
+  CursoRepository cursoRepository;
 
-	@Autowired
-	List<IValidacaoTopico> validacoesTopico;
+  @Autowired
+  List<IValidacaoTopico> validacoesTopico;
 
-	@Transactional
-	public TopicoDetailsDTO cadastrarTopico(CadastroTopicoDTO topicoDTO) {
+  @Autowired
+  List<IValidacaoUpdateTopico> validacoesUpdateTopico;
 
-		validarTopico(topicoDTO);
+  @Transactional
+  public TopicoDetailsDTO cadastrarTopico(CadastroTopicoDTO topicoDTO) {
 
-		Usuario usuario = usuarioRepository.getReferenceById(topicoDTO.idAutor());
-		Curso curso = cursoRepository.getReferenceByNome(topicoDTO.cursoNome());
-		Topico newTopico = new Topico(topicoDTO, curso, usuario);
+    validacoesTopico.forEach(validacao -> validacao.valida(topicoDTO));
 
-		return new TopicoDetailsDTO(topicoRepository.save(newTopico));
-	}
+    Usuario usuario = usuarioRepository.getReferenceById(topicoDTO.idAutor());
+    Curso curso = cursoRepository.getReferenceByNome(topicoDTO.cursoNome());
+    Topico newTopico = new Topico(topicoDTO, curso, usuario);
 
-	public void validarTopico(CadastroTopicoDTO topicoDTO) {
-		validacoesTopico.forEach(validacao -> validacao.valida(topicoDTO));
-	}
+    return new TopicoDetailsDTO(topicoRepository.save(newTopico));
+  }
 
-	public Page<TopicoDetailsDTO> getAllTopicos(Pageable pageable) {
-		return topicoRepository.findAllByDeletedIsFalse(pageable).map(TopicoDetailsDTO::new);
-	}
+  public Page<TopicoDetailsDTO> getAllTopicos(Pageable pageable) {
+    return topicoRepository.findAllByDeletedIsFalse(pageable).map(TopicoDetailsDTO::new);
+  }
 
-	public Page<TopicoDetailsDTO> getTopicosRecentes(Pageable pageable) {
-		return topicoRepository.findAllByDeletedIsFalseOrderByDataCriacaoDesc(pageable)
-				.map(TopicoDetailsDTO::new);
-	}
+  public Page<TopicoDetailsDTO> getTopicosRecentes(Pageable pageable) {
+    return topicoRepository.findAllByDeletedIsFalseOrderByDataCriacaoDesc(pageable)
+        .map(TopicoDetailsDTO::new);
+  }
 
-	public TopicoDetailsDTO buscaTopico(Long id) {
+  public TopicoDetailsDTO buscaTopico(Long id) {
 
-		Optional<Topico> topico = topicoRepository.findById(id);
-		if (topico.isEmpty()) {
-			throw new TopiconNotFoundException("Topico não encontrado");
-		}
-		if (topico.get().isDeleted()) {
-			throw new TopicoDeletedException("Este topico foi excluído pelo autor");
-		}
+    Topico topico = topicoRepository.findById(id).get();
 
-		return new TopicoDetailsDTO(topico.get());
-	}
+    if (topico == null) {
+      throw new TopiconNotFoundException("Topico não encontrado");
+    }
+    if (topico.isDeleted()) {
+      throw new TopicoDeletedException("Este topico foi excluído pelo autor");
+    }
 
-	@Transactional
-	public TopicoDetailsDTO atualizarTopico(AtualizacaoTopicoDTO topico, Long id) {
+    return new TopicoDetailsDTO(topico);
+  }
 
-		// TODO: Deve ser validado se quem está alterando as informações do Topico é o
-		// próprio autor
+  @Transactional
+  public TopicoDetailsDTO atualizarTopico(AtualizacaoTopicoDTO topicoDTO, Long topicoId) {
 
-		Optional<Topico> topicoEntity = topicoRepository.findByIdAndDeletedIsFalse(id);
-		if (topicoEntity.isEmpty()) {
-			throw new TopiconNotFoundException("Topico não encontrado para atualização");
-		}
+    Topico topicoEntity = topicoRepository.findByIdAndDeletedIsFalse(topicoId).get();
+    Curso curso = cursoRepository.getReferenceByNome(topicoDTO.cursoNome());
 
-		Curso curso = cursoRepository.getReferenceByNome(topico.cursoNome());
-		if (!topicoEntity.get().updated(topico, curso)) {
-			throw new TopicoNotUpdatedException("Os dados informados são iguais aos atuais");
-		}
+    validacoesUpdateTopico.forEach(validacao -> validacao.validarUpdate(topicoEntity, topicoDTO, topicoId, curso));
 
-		return new TopicoDetailsDTO(topicoRepository.save(topicoEntity.get()));
-	}
+    return new TopicoDetailsDTO(topicoEntity);
+  }
 
-	@Transactional
-	public void deletarTopico(Long id) {
+  @Transactional
+  public void deletarTopico(Long id) {
 
-		// TODO: Adicionar logica para verificar se usuario é o autor do topico
+    // TODO: Adicionar logica para verificar se usuario é o autor do topico
 
-		Optional<Topico> topico = topicoRepository.findByIdAndDeletedIsFalse(id);
-		if (topico.isEmpty()) {
-			throw new TopiconNotFoundException("Topico não encontrado");
-		}
+    Optional<Topico> topico = topicoRepository.findByIdAndDeletedIsFalse(id);
+    if (topico.isEmpty()) {
+      throw new TopiconNotFoundException("Topico não encontrado");
+    }
 
-		// adicionar um logger antes da deleção e outro depois para registro de exclusão
-		topico.get().delete();
+    // adicionar um logger antes da deleção e outro depois para registro de exclusão
+    topico.get().delete();
 
-		// verificar se tem algumas respostas vinculado a este tópico. Pensar se deve
-		// deletar também ou
-		// não as respostas
-	}
+    // verificar se tem algumas respostas vinculado a este tópico. Pensar se deve
+    // deletar também ou
+    // não as respostas
+  }
 }

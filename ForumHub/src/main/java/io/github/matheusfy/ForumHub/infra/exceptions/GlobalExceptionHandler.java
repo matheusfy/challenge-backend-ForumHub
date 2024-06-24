@@ -9,14 +9,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import io.github.matheusfy.ForumHub.infra.auth.TokenExpiradoException;
+import io.github.matheusfy.ForumHub.infra.exceptions.cursoExceptions.CursoInvalidoException;
 import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.DuplicateTituloAndMessagemException;
-import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.InvalidCursoException;
 import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.TopicoDeletedException;
 import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.TopicoNotUpdatedException;
 import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.TopiconNotFoundException;
 import io.github.matheusfy.ForumHub.infra.exceptions.usuarioExceptions.DuplicatedEmailException;
 import io.github.matheusfy.ForumHub.infra.exceptions.usuarioExceptions.InvalidUserException;
 import io.github.matheusfy.ForumHub.infra.exceptions.usuarioExceptions.SenhaInvalidException;
+import io.github.matheusfy.ForumHub.infra.exceptions.usuarioExceptions.UserUnauthorizedException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -33,18 +34,18 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidUserException.class)
     public ResponseEntity<String> InvalidUserException(InvalidUserException ex) {
-        return ResponseEntity.badRequest().body(ex.getMessage());
+        return ResponseEntity.notFound().build();
     }
 
     @ExceptionHandler(DuplicateTituloAndMessagemException.class)
     public ResponseEntity<String> DuplicateTituloAndMessagemException(
             DuplicateTituloAndMessagemException ex) {
-        return ResponseEntity.badRequest().body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 
-    @ExceptionHandler(InvalidCursoException.class)
-    public ResponseEntity<String> InvalidCursoException(InvalidCursoException ex) {
-        return ResponseEntity.badRequest().body(ex.getMessage());
+    @ExceptionHandler(CursoInvalidoException.class)
+    public ResponseEntity<String> InvalidCursoException(CursoInvalidoException ex) {
+        return ResponseEntity.notFound().build();
     }
 
     @ExceptionHandler(TopiconNotFoundException.class)
@@ -72,4 +73,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
     }
 
+    @ExceptionHandler(UserUnauthorizedException.class)
+    public ResponseEntity<String> UserUnauthorizedException(UserUnauthorizedException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+    }
 }

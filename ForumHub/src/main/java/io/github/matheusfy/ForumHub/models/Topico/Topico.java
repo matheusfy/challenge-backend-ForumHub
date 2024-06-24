@@ -97,7 +97,7 @@ public class Topico {
 			this.status = topico.status();
 			updated = true;
 		}
-		if (this.curso == null || !curso.equals(this.curso)) {
+		if (this.curso != null && !curso.equals(this.curso)) {
 			this.curso = curso;
 			updated = true;
 		}
@@ -105,5 +105,12 @@ public class Topico {
 			updateDataAtualizacao();
 		}
 		return updated;
+	}
+
+	@Override
+	public String toString() {
+		return "Topico [id=" + id + ", titulo=" + titulo + ", mensagem=" + mensagem + ", status=" + status
+				+ ", dataCriacao=" + dataCriacao + ", dataAtualizacao=" + dataAtualizacao + ", deleted=" + deleted
+				+ ", curso=" + curso + ", usuario=" + usuario + ", respostas=" + respostas + "]";
 	}
 }
