@@ -9,8 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 import io.github.matheusfy.ForumHub.models.Topico.CadastroTopicoDTO;
+import io.github.matheusfy.ForumHub.models.Topico.dto.AtualizacaoTopicoDTO;
 import io.github.matheusfy.ForumHub.models.Topico.dto.TopicoDetailsDTO;
 import io.github.matheusfy.ForumHub.services.TopicoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,12 +27,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/topicos")
+@Tag(name = "Tópicos")
 public class TopicoController {
 
 	@Autowired
 	private TopicoService topicoService;
 
 	@GetMapping
+	@Operation(summary = "Busca todos os tópicos", description = "Retorna todos os tópicos cadastrados")
 	public ResponseEntity<Page<TopicoDetailsDTO>> buscarTodosTopicos(
 			@PageableDefault(size = 10, page = 0) Pageable pageable) {
 
@@ -37,6 +43,7 @@ public class TopicoController {
 	}
 
 	@GetMapping("/recentes")
+	@Operation(summary = "Busca tópicos recentes", description = "Retorna os 10 tópicos mais recentes cadastrados por paginação")
 	public ResponseEntity<Page<TopicoDetailsDTO>> buscarTopicosRecentes(
 			@PageableDefault(size = 10, page = 0) Pageable pageable) {
 
@@ -45,12 +52,14 @@ public class TopicoController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<TopicoDetailsDTO> buscaTopico(@PathVariable Long id) {
+	@Operation(summary = "Busca um tópico", description = "Retorna um tópico	específico")
+	public ResponseEntity<TopicoDetailsDTO> buscaTopico(
+			@PathVariable @Parameter(name = "id", description = "Topico id", example = "1") Long id) {
 		return ResponseEntity.ok().body(topicoService.buscaTopico(id));
 	}
 
-
 	@PostMapping
+	@Operation(summary = "Cadastra um tópico", description = "Cadastra um novo tópico")
 	public ResponseEntity<TopicoDetailsDTO> cadastrarTopico(
 			@RequestBody @Valid CadastroTopicoDTO topico, UriComponentsBuilder uriBuilder) {
 
@@ -60,6 +69,7 @@ public class TopicoController {
 	}
 
 	@PutMapping("/{id}")
+	@Operation(summary = "Atualiza um tópico", description = "Atualiza um tópico existente")
 	public ResponseEntity<TopicoDetailsDTO> atualizarTopico(
 			@RequestBody @Valid AtualizacaoTopicoDTO topico, @PathVariable Long id) {
 
@@ -68,6 +78,7 @@ public class TopicoController {
 	}
 
 	@DeleteMapping("/{id}")
+	@Operation(summary = "Deleta um tópico", description = "Deleta um tópico existente")
 	public ResponseEntity<?> deletarTopico(@PathVariable Long id) {
 		topicoService.deletarTopico(id);
 		return ResponseEntity.noContent().build();

@@ -1,9 +1,14 @@
 package io.github.matheusfy.ForumHub.infra.exceptions;
 
+import java.time.Instant;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import io.github.matheusfy.ForumHub.infra.auth.TokenExpiradoException;
 import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.DuplicateTituloAndMessagemException;
 import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.InvalidCursoException;
 import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.TopicoDeletedException;
@@ -57,6 +62,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.GONE).body(ex.getMessage());
     }
 
-    public record ErrorMsg(String campo, String msg) {
+    @ExceptionHandler(TokenExpiradoException.class)
+    public ResponseEntity<String> TokenExpiradoException(String message, Instant expiredOn) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message + " " + expiredOn);
     }
+
+    @ExceptionHandler(JWTVerificationException.class)
+    public ResponseEntity<String> JWTVerificationException(JWTVerificationException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+    }
+
 }

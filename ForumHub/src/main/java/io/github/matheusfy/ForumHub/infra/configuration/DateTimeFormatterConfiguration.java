@@ -1,4 +1,4 @@
-package io.github.matheusfy.ForumHub.infra;
+package io.github.matheusfy.ForumHub.infra.configuration;
 
 import java.time.format.DateTimeFormatter;
 
