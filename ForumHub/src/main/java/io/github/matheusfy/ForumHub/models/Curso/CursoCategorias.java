@@ -1,6 +1,6 @@
 package io.github.matheusfy.ForumHub.models.Curso;
 
-import io.github.matheusfy.ForumHub.infra.exceptions.topicoExceptions.InvalidCursoException;
+import io.github.matheusfy.ForumHub.infra.exceptions.cursoExceptions.CursoInvalidoException;
 
 public enum CursoCategorias {
 	PROGRAMACAO("Programação"), ENGENHARIA("Engenharia");
@@ -18,7 +18,7 @@ public enum CursoCategorias {
 				return curso;
 			}
 		}
-		throw new InvalidCursoException("Categoria do curso informado é inválida.");
+		throw new CursoInvalidoException("Categoria do curso informado é inválida.");
 	}
 
 }

@@ -1,4 +1,4 @@
-package io.github.matheusfy.ForumHub.models.Topico.validation;
+package io.github.matheusfy.ForumHub.models.Topico.validation.cadastro;
 
 import java.util.Optional;
 
