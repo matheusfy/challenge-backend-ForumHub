@@ -16,7 +16,7 @@ import io.github.matheusfy.ForumHub.models.Topico.dto.AtualizacaoTopicoDTO;
 import io.github.matheusfy.ForumHub.models.Topico.dto.TopicoDetailsDTO;
 import io.github.matheusfy.ForumHub.models.Topico.validation.atualizacao.IValidacaoUpdateTopico;
 import io.github.matheusfy.ForumHub.models.Topico.validation.cadastro.IValidacaoTopico;
-import io.github.matheusfy.ForumHub.models.Topico.validation.cadastro.ValidaTopicoMensagemRepetida;
+import io.github.matheusfy.ForumHub.models.Topico.validation.delecao.IValidacaoDeleteTopico;
 import io.github.matheusfy.ForumHub.models.Usuario.Usuario;
 import io.github.matheusfy.ForumHub.repositories.CursoRepository;
 import io.github.matheusfy.ForumHub.repositories.TopicoRepository;
@@ -40,6 +40,9 @@ public class TopicoService {
 
   @Autowired
   List<IValidacaoUpdateTopico> validacoesUpdateTopico;
+
+  @Autowired
+  List<IValidacaoDeleteTopico> validacoesDeleteTopico;
 
   @Transactional
   public TopicoDetailsDTO cadastrarTopico(CadastroTopicoDTO topicoDTO) {
@@ -88,14 +91,11 @@ public class TopicoService {
   }
 
   @Transactional
-  public void deletarTopico(Long id) {
+  public void deletarTopico(Long topicoId, Long requestUserId) {
 
-    // TODO: Adicionar logica para verificar se usuario é o autor do topico
+    Optional<Topico> topico = topicoRepository.findByIdAndDeletedIsFalse(topicoId);
 
-    Optional<Topico> topico = topicoRepository.findByIdAndDeletedIsFalse(id);
-    if (topico.isEmpty()) {
-      throw new TopiconNotFoundException("Topico não encontrado");
-    }
+    validacoesDeleteTopico.forEach(validacao -> validacao.validarDelete(topico, requestUserId));
 
     // adicionar um logger antes da deleção e outro depois para registro de exclusão
     topico.get().delete();

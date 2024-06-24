@@ -1,6 +1,7 @@
 package io.github.matheusfy.ForumHub.controller;
 
 import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -81,8 +83,8 @@ public class TopicoController {
 
   @DeleteMapping("/{id}")
   @Operation(summary = "Deleta um tópico", description = "Deleta um tópico existente")
-  public ResponseEntity<?> deletarTopico(@PathVariable Long id) {
-    topicoService.deletarTopico(id);
+  public ResponseEntity<?> deletarTopico(@PathVariable Long id, @RequestParam @Valid Long userId) {
+    topicoService.deletarTopico(id, userId);
     return ResponseEntity.noContent().build();
   }
 }
