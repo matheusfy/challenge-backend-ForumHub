@@ -68,6 +68,18 @@ Você pode acessar o swagger da aplicação acessando `http://localhost:8080/swa
 7. Abra no seu terminal o bash do container com o comando `docker exec -it <container_name> bash` ou vá até o bash do container diretamente pelo **docker desktop**.
 8. Acesse com as suas credenciais pré-definidas o banco MySQL e então crie o seu banco de desenvolvimento e o seu banco de teste. 
 
+        minhas configurações no launch.json:
+          "configurations": [
+                {
+                "type": "java",
+                "name": "ForumHubApplication",
+                "request": "launch",
+                "mainClass": "io.github.matheusfy.ForumHub.ForumHubApplication",
+                "projectName": "ForumHub",
+                "envFile": "${workspaceFolder}/.vscode/.env",
+                }
+        ]
+
 ### Intellij
 
 - Abra o projeto na pasta forumhub.
