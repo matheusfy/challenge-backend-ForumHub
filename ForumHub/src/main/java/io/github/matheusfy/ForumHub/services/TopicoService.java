@@ -91,7 +91,9 @@ public class TopicoService {
   }
 
   @Transactional
-  public void deletarTopico(Long topicoId, Long requestUserId) {
+  public void deletarTopico(Long topicoId, String email) {
+
+    Long requestUserId = usuarioRepository.findByEmail(email).get().getId();
 
     Optional<Topico> topico = topicoRepository.findByIdAndDeletedIsFalse(topicoId);
 
