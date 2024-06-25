@@ -1,5 +1,5 @@
 
-![ThumbCurso](forumhub/img/thumb.png)
+![ThumbCurso](img/thumb.png)
   
 # Challenge-Backend-ForumHub
 
