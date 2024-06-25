@@ -9,6 +9,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import io.github.matheusfy.ForumHub.infra.auth.TokenService;
 import io.github.matheusfy.ForumHub.models.Topico.CadastroTopicoDTO;
 import io.github.matheusfy.ForumHub.models.Topico.dto.AtualizacaoTopicoDTO;
 import io.github.matheusfy.ForumHub.models.Topico.dto.TopicoDetailsDTO;
@@ -20,7 +22,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +36,9 @@ public class TopicoController {
 
   @Autowired
   private TopicoService topicoService;
+
+  @Autowired
+  private TokenService tokenService;
 
   @GetMapping
   @Operation(summary = "Busca todos os tópicos", description = "Retorna todos os tópicos cadastrados")
@@ -83,8 +87,10 @@ public class TopicoController {
 
   @DeleteMapping("/{id}")
   @Operation(summary = "Deleta um tópico", description = "Deleta um tópico existente")
-  public ResponseEntity<?> deletarTopico(@PathVariable Long id, @RequestParam @Valid Long userId) {
-    topicoService.deletarTopico(id, userId);
+  public ResponseEntity<?> deletarTopico(@PathVariable Long id, HttpServletRequest request) {
+
+    String email = tokenService.getSubject(tokenService.stripBearer(request));
+    topicoService.deletarTopico(id, email);
     return ResponseEntity.noContent().build();
   }
 }

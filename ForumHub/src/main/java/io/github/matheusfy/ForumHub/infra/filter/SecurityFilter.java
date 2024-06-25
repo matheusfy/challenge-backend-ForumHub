@@ -7,7 +7,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import io.github.matheusfy.ForumHub.infra.auth.TokenService;
 import io.github.matheusfy.ForumHub.repositories.UsuarioRepository;
 import jakarta.servlet.FilterChain;
@@ -24,18 +23,15 @@ public class SecurityFilter extends OncePerRequestFilter {
   @Autowired
   private UsuarioRepository userRepository;
 
-  private final String AUTHORIZATION_HEADER = "Authorization";
-
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
       FilterChain filterChain) throws ServletException, IOException {
 
-    String token = stripBearer(request);
+    String token = tokenService.stripBearer(request);
 
     if (token != null) {
 
-      DecodedJWT decodedJWT = tokenService.validateToken(token);
-      String email = decodedJWT.getSubject();
+      String email = tokenService.getSubject(token);
       UserDetails usuario = userRepository.findByEmail(email).get();
 
       UsernamePasswordAuthenticationToken userAuth = new UsernamePasswordAuthenticationToken(usuario, null,
@@ -47,13 +43,4 @@ public class SecurityFilter extends OncePerRequestFilter {
     filterChain.doFilter(request, response);
   }
 
-  private String stripBearer(HttpServletRequest request) {
-
-    String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-
-    if (bearerToken == null || !bearerToken.startsWith("Bearer ")) {
-      return null;
-    }
-    return bearerToken.replace("Bearer ", "");
-  }
 }
