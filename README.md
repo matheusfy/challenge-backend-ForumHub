@@ -15,8 +15,6 @@ O Fórumhub é uma aplicação onde usuários podem realizar posts de suas dúvi
 
 ## ✔️ Técnicas e tecnologias utilizadas
 
-**Faça uma lista de tecnologias e técnicas utilizadas (a justificativa e descrição são opcionais)**:
-
 - **Backend:** Java 17 com Spring Boot, utilizando Spring Security para autenticação, Spring Validation para validação de dados, e Spring Web para a criação de APIs RESTful, Flyway para controle de versões (Migrations) do Banco de dados.
 - **Banco de Dados:** MySQL para armazenamento de dados de forma estruturada e eficiente.
 - **Autenticação:** JWT (JSON Web Tokens) para uma autenticação segura e eficiente.
