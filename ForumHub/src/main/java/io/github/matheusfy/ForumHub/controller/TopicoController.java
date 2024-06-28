@@ -80,8 +80,7 @@ public class TopicoController {
   public ResponseEntity<TopicoDetailsDTO> atualizarTopico(
       @RequestBody @Valid AtualizacaoTopicoDTO topico, @PathVariable Long id, HttpServletRequest request) {
 
-    TopicoDetailsDTO topicoAtualizado = topicoService.atualizarTopico(topico,
-        id);
+    TopicoDetailsDTO topicoAtualizado = topicoService.atualizarTopico(topico, id);
     return ResponseEntity.ok().body(topicoAtualizado);
   }
 
