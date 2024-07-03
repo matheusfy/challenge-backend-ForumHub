@@ -41,4 +41,8 @@ public class UsuarioService {
 		return usuarioRepository.findAll(pageable).map(UserBasicInfoDTO::new);
 	}
 
+	public Usuario getUserByEmail(String userEmail) {
+		return usuarioRepository.findByEmail(userEmail).get();
+	}
+
 }
