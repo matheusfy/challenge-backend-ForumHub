@@ -1,0 +1,1 @@
+alter table respostas add column deleted boolean default false not null;

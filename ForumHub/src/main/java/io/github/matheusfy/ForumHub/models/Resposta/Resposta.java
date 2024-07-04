@@ -1,5 +1,6 @@
 package io.github.matheusfy.ForumHub.models.Resposta;
 
+import io.github.matheusfy.ForumHub.models.Resposta.dto.RespostaDto;
 import io.github.matheusfy.ForumHub.models.Topico.Topico;
 import io.github.matheusfy.ForumHub.models.Usuario.Usuario;
 import jakarta.persistence.Entity;
@@ -32,6 +33,8 @@ public class Resposta {
 	private String solucao;
 	private LocalDateTime dataCriacao;
 
+	private boolean deleted;
+
 	@ManyToOne
 	@JoinColumn(name = "topico_id")
 	private Topico topico;
@@ -39,5 +42,11 @@ public class Resposta {
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
+
+	public void update(RespostaDto respostaDto) {
+
+		this.mensagem = respostaDto.mensagem();
+		this.solucao = respostaDto.solucao();
+	}
 
 }

@@ -15,10 +15,19 @@ public interface RespostaRepository extends JpaRepository<Resposta, Long> {
   // outra para pegar a quantidades dos objetos. Quando se usa * ocorre um erro na
   // conversão
   @Query(value = """
-      select r.id, r.mensagem, r.topico_id, r.data_criacao, r.usuario_id, r.solucao from respostas as r
+      select r.id, r.mensagem, r.topico_id, r.data_criacao, r.usuario_id, r.solucao, r.deleted from respostas as r
       join topicos on r.topico_id = topicos.id
       where topicos.id = ?1 and topicos.deleted = false
+      and r.deleted = false
       """, nativeQuery = true)
-  Page<Resposta> getRespostaTopico(Long idTopico, Pageable pageable);
+  Page<Resposta> getRespostasTopico(Long idTopico, Pageable pageable);
+
+  @Query(value = """
+      select r.id, r.mensagem, r.topico_id, r.data_criacao, r.usuario_id, r.solucao, r.deleted from respostas as r
+      join usuarios on r.usuario_id = usuarios.id
+      where usuarios.email = ?1
+      and r.deleted = false
+      """, nativeQuery = true)
+  Page<Resposta> getRespostasUsuario(String email, Pageable pageable);
 
 }
