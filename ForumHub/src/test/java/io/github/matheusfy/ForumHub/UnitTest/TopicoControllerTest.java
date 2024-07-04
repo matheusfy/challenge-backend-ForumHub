@@ -1,4 +1,4 @@
-package io.github.matheusfy.ForumHub.controllerTest;
+package io.github.matheusfy.ForumHub.UnitTest;
 
 import io.github.matheusfy.ForumHub.infra.auth.TokenService;
 import io.github.matheusfy.ForumHub.models.Curso.Curso;
@@ -76,6 +76,9 @@ class TopicoControllerTest {
 		topico1 = new Topico(1L, ct1.titulo(), ct1.mensagem(), StatusTopico.ABERTO,
 				LocalDateTime.parse("2021-09-01T10:15:30"),
 				LocalDateTime.parse("2021-09-01T10:15:30"), true, curso, user, null);
+		topico2 = new Topico(2L, ct2.titulo(), ct2.mensagem(), StatusTopico.ABERTO,
+				LocalDateTime.parse("2021-09-01T12:15:30"),
+				LocalDateTime.parse("2021-09-01T12:15:30"), true, curso, user, null);
 	}
 
 	@Test
