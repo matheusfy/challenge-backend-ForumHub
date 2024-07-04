@@ -13,6 +13,6 @@ public record RespostaDto(
         String solucao) {
 
     public Resposta toResposta(Topico topico, Usuario usuario) {
-        return new Resposta(null, mensagem, solucao, LocalDateTime.now(), topico, usuario);
+        return new Resposta(null, mensagem, solucao, LocalDateTime.now(), false, topico, usuario);
     }
 }
