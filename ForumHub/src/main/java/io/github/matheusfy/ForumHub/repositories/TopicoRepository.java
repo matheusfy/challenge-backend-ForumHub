@@ -23,4 +23,6 @@ public interface TopicoRepository extends JpaRepository<Topico, Long> {
 
 	Page<Topico> findAllByDeletedIsFalse(Pageable pageable);
 
+	Topico findReferenceByIdAndDeletedFalse(Long idTopico);
+
 }
